@@ -27,6 +27,45 @@ jobs:
         with:
           nuget-version: 'latest'
 
+      - name: Activate DevExpress License
+        shell: pwsh
+        env:
+          DX_LICENSE_KEY: ${{ secrets.DEVEXPRESS_LICENSE_KEY }}
+        run: |
+          Write-Host "Activating DevExpress license..."
+          
+          $licenseKey = $env:DX_LICENSE_KEY
+          
+          if ([string]::IsNullOrWhiteSpace($licenseKey)) {
+            Write-Host "ERROR: DEVEXPRESS_LICENSE_KEY secret is not set!"
+            Write-Host "You need to add your DevExpress license key (starts with LCXv1) as a GitHub secret."
+            exit 1
+          }
+          
+          Write-Host "License key received - Length: $($licenseKey.Length) chars"
+          
+          # Create DevExpress config directory
+          $dxConfigPath = Join-Path $env:APPDATA "DevExpress"
+          if (-not (Test-Path $dxConfigPath)) {
+            New-Item -ItemType Directory -Path $dxConfigPath -Force | Out-Null
+            Write-Host "Created DevExpress config directory: $dxConfigPath"
+          }
+          
+          # Write license file
+          $licensePath = Join-Path $dxConfigPath "DevExpress_License.txt"
+          $licenseKey | Set-Content -Path $licensePath -Encoding UTF8
+          
+          Write-Host "DevExpress license file created at: $licensePath"
+          
+          # Verify
+          if (Test-Path $licensePath) {
+            $fileSize = (Get-Item $licensePath).Length
+            Write-Host "License file verified - Size: $fileSize bytes"
+          } else {
+            Write-Host "ERROR: Failed to create license file!"
+            exit 1
+          }
+
       - name: Configure DevExpress NuGet Feed
         shell: pwsh
         env:
