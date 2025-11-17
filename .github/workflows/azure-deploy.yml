@@ -238,3 +238,16 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: .
+
+      - name: Post-Deployment Verification
+        shell: pwsh
+        run: |
+          Write-Host "Deployment completed. Please verify the following:"
+          Write-Host "1. Check Azure Kudu console: https://${{ env.AZURE_WEBAPP_NAME }}.scm.azurewebsites.net/DebugConsole"
+          Write-Host "2. Navigate to: site/wwwroot/bin"
+          Write-Host "3. Look for DevExpress*.dll files"
+          Write-Host ""
+          Write-Host "If DLLs are missing from Azure but present in artifact:"
+          Write-Host "- Check App Service Configuration > General Settings > Stack = .NET Framework 4.8"
+          Write-Host "- Check App Service Configuration > Application Settings for any blocking settings"
+          Write-Host "- Try restarting the App Service"
