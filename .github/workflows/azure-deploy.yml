@@ -58,8 +58,8 @@ jobs:
           nuget sources Add `
             -Name "DevExpress" `
             -Source "https://nuget.devexpress.com/api" `
-            -UserName "ericcouch@yahoo.com" `
-            -Password "Y_2nhgDVTa:65Ac" `
+            -UserName "DevExpress" `
+            -Password "${{ secrets.DEVEXPRESS_NUGET_KEY }}" `
             -StorePasswordInClearText
           
           Write-Host "NuGet sources configured:"
