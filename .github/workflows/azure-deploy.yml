@@ -32,52 +32,52 @@ jobs:
         run: |
           Write-Host "Configuring DevExpress NuGet authentication..."
           
-          # Update existing nuget.config with credentials
-          $nugetConfigPath = Join-Path $env:GITHUB_WORKSPACE "nuget.config"
-          if (Test-Path $nugetConfigPath) {
-            Write-Host "Found nuget.config at: $nugetConfigPath"
-            $content = Get-Content $nugetConfigPath -Raw
-            $content = $content -replace '%DEVEXPRESS_NUGET_KEY%', '${{ secrets.DEVEXPRESS_NUGET_KEY }}'
-            $content | Set-Content $nugetConfigPath -Encoding UTF8
-            Write-Host "Updated nuget.config with API key"
-          }
+          # Create a custom NuGet.config in the solution directory with embedded credentials
+          $nugetConfigPath = Join-Path $env:GITHUB_WORKSPACE "NuGet.Config"
           
-          # Also set up user-level NuGet config with credentials
-          Write-Host "Configuring user-level NuGet credentials..."
-          $userNuGetConfig = "$env:APPDATA\NuGet\NuGet.Config"
-          $userNuGetDir = Split-Path $userNuGetConfig -Parent
+          $nugetConfig = @"
+          <?xml version="1.0" encoding="utf-8"?>
+          <configuration>
+            <config>
+              <add key="disableSourceControlIntegration" value="true" />
+            </config>
+            <packageSources>
+              <clear />
+              <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
+              <add key="DevExpress" value="https://nuget.devexpress.com/api" />
+            </packageSources>
+            <packageSourceCredentials>
+              <DevExpress>
+                <add key="Username" value="DevExpress" />
+                <add key="ClearTextPassword" value="${{ secrets.DEVEXPRESS_NUGET_KEY }}" />
+              </DevExpress>
+            </packageSourceCredentials>
+            <disabledPackageSources />
+          </configuration>
+          "@
           
-          if (-not (Test-Path $userNuGetDir)) {
-            New-Item -ItemType Directory -Path $userNuGetDir -Force | Out-Null
-          }
+          $nugetConfig | Set-Content $nugetConfigPath -Encoding UTF8
+          Write-Host "Created NuGet.Config at: $nugetConfigPath"
           
-          # Remove existing DevExpress source if it exists
-          nuget sources Remove -Name "DevExpress" 2>$null
+          # Display config (with password masked)
+          $displayConfig = $nugetConfig -replace '(<ClearTextPassword value=")[^"]+(")', '$1****$2'
+          Write-Host "Config content:`n$displayConfig"
           
-          # Add DevExpress source with credentials to user config
-          nuget sources Add `
-            -Name "DevExpress" `
-            -Source "https://nuget.devexpress.com/api" `
-            -UserName "DevExpress" `
-            -Password "${{ secrets.DEVEXPRESS_NUGET_KEY }}" `
-            -StorePasswordInClearText
-          
-          Write-Host "NuGet sources configured:"
-          nuget sources List
-          
-          Write-Host "`nVerifying config files:"
-          if (Test-Path $nugetConfigPath) {
-            Write-Host "Workspace config exists: $nugetConfigPath"
-          }
-          if (Test-Path $userNuGetConfig) {
-            Write-Host "User config exists: $userNuGetConfig"
-          }
+          # Disable credential providers that interfere
+          $env:NUGET_PLUGIN_HANDSHAKE_TIMEOUT_IN_SECONDS = "1"
+          $env:NUGET_PLUGIN_REQUEST_TIMEOUT_IN_SECONDS = "1"
 
       - name: Restore NuGet packages
         shell: pwsh
         run: |
           Write-Host "Starting NuGet restore..."
-          nuget restore ReeseJonesHoldingsUIs.sln -Verbosity detailed -NonInteractive
+          
+          # Disable credential providers
+          $env:NUGET_PLUGIN_HANDSHAKE_TIMEOUT_IN_SECONDS = "1"
+          $env:NUGET_PLUGIN_REQUEST_TIMEOUT_IN_SECONDS = "1"
+          
+          $nugetConfigPath = Join-Path $env:GITHUB_WORKSPACE "NuGet.Config"
+          nuget restore ReeseJonesHoldingsUIs.sln -ConfigFile "$nugetConfigPath" -Verbosity detailed -NonInteractive
 
       - name: Build solution
         run: msbuild ReeseJonesHoldingsUIs.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:OutputPath=.\publish
