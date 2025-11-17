@@ -91,7 +91,7 @@ jobs:
         run: |
           Write-Host "Building solution..."
           
-          # Build the solution
+          # Build and publish the web application
           msbuild ReeseJonesHoldingsUIs\ReeseJonesHoldingsUIs.csproj `
             /p:Configuration=Release `
             /p:Platform=AnyCPU `
@@ -99,25 +99,47 @@ jobs:
             /p:PublishUrl=publish `
             /p:WebPublishMethod=FileSystem `
             /p:DeleteExistingFiles=true `
-            /p:_FindDependencies=false `
-            /t:Rebuild `
+            /p:CopyAllFilesToSingleFolderForPackageDependsOn=CollectGlobalResourcesForPublish `
+            /p:AutoParameterizationWebConfigConnectionStrings=false `
+            /p:MarkWebConfigAssistFilesAsExclude=false `
+            /p:ExcludeGeneratedDebugSymbol=false `
+            /p:CopyWebApplication=true `
+            /p:OutDir=obj\Release\ `
+            /t:Rebuild`;WebPublish `
             /verbosity:minimal
           
           Write-Host "Build completed"
           
-          # Verify publish folder exists
+          # Verify publish folder and DevExpress DLLs
           $publishPath = Join-Path $env:GITHUB_WORKSPACE "ReeseJonesHoldingsUIs\publish"
           if (Test-Path $publishPath) {
             Write-Host "Publish folder created at: $publishPath"
             $fileCount = (Get-ChildItem -Path $publishPath -Recurse -File | Measure-Object).Count
             Write-Host "Total files in publish folder: $fileCount"
             
-            # Check for DevExpress DLLs
-            $dxDlls = Get-ChildItem -Path "$publishPath\bin" -Filter "DevExpress*.dll" -ErrorAction SilentlyContinue
-            if ($dxDlls) {
-              Write-Host "Found $($dxDlls.Count) DevExpress DLLs in bin folder"
+            # Check for bin folder
+            $binPath = Join-Path $publishPath "bin"
+            if (Test-Path $binPath) {
+              Write-Host "Bin folder exists"
+              
+              # List all DLLs
+              $allDlls = Get-ChildItem -Path $binPath -Filter "*.dll"
+              Write-Host "Total DLLs in bin: $($allDlls.Count)"
+              
+              # Check for DevExpress DLLs specifically
+              $dxDlls = $allDlls | Where-Object { $_.Name -like "DevExpress*.dll" }
+              if ($dxDlls) {
+                Write-Host "Found $($dxDlls.Count) DevExpress DLLs:"
+                $dxDlls | ForEach-Object { Write-Host "  - $($_.Name)" }
+              } else {
+                Write-Host "ERROR: No DevExpress DLLs found in bin folder!"
+                Write-Host "Listing all DLLs for reference:"
+                $allDlls | Select-Object -First 20 | ForEach-Object { Write-Host "  - $($_.Name)" }
+                exit 1
+              }
             } else {
-              Write-Host "WARNING: No DevExpress DLLs found in bin folder!"
+              Write-Host "ERROR: Bin folder not found in publish directory!"
+              exit 1
             }
           } else {
             Write-Host "ERROR: Publish folder not created!"
