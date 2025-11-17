@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Error500.aspx.cs" Inherits="ReeseJonesHoldingsUIs.Error500" MasterPageFile="~/Site.Master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Error500.aspx.cs" Inherits="ReeseJonesHoldingsUIs.Error500" MasterPageFile="~/Site.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="error-container">
@@ -19,14 +19,14 @@
         <div style="display: flex; gap: 10px; justify-content: center;">
             <dx:ASPxButton ID="btnHome" runat="server" 
                 Text="Return to Home" 
-                Theme="Office365"
+                
                 OnClick="btnHome_Click"
                 CssClass="btn-primary">
                 <Image IconID="actions_home_16x16"></Image>
             </dx:ASPxButton>
             <dx:ASPxButton ID="btnRetry" runat="server" 
                 Text="Try Again" 
-                Theme="Office365"
+                
                 OnClick="btnRetry_Click">
                 <Image IconID="actions_refresh_16x16"></Image>
             </dx:ASPxButton>

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="LeaveRequest.aspx.cs" Inherits="ReeseJonesHoldingsUIs.Pages.LeaveRequestPage" MasterPageFile="~/Site.Master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="LeaveRequest.aspx.cs" Inherits="ReeseJonesHoldingsUIs.Pages.LeaveRequestPage" MasterPageFile="~/Site.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <asp:HiddenField ID="hfLeaveRequests" runat="server" />
@@ -16,14 +16,14 @@
             CssClass="message-label">
         </dx:ASPxLabel>
 
-        <dx:ASPxFormLayout ID="formLayout" runat="server" Theme="Office365">
+        <dx:ASPxFormLayout ID="formLayout" runat="server" >
             <Items>
                 <dx:LayoutGroup Caption="Employee Information" ColCount="2">
                     <Items>
                         <dx:LayoutItem Caption="Employee Name" RequiredMarkDisplayMode="Required" ColSpan="2">
                             <LayoutItemNestedControlCollection>
                                 <dx:LayoutItemNestedControlContainer>
-                                    <dx:ASPxTextBox ID="txtEmployeeName" runat="server" Width="100%" Theme="Office365">
+                                    <dx:ASPxTextBox ID="txtEmployeeName" runat="server" Width="100%" >
                                         <ValidationSettings Display="Dynamic" SetFocusOnError="true" ErrorDisplayMode="ImageWithTooltip">
                                             <RequiredField IsRequired="true" ErrorText="Employee name is required" />
                                         </ValidationSettings>
@@ -35,7 +35,7 @@
                         <dx:LayoutItem Caption="Leave Type" RequiredMarkDisplayMode="Required">
                             <LayoutItemNestedControlCollection>
                                 <dx:LayoutItemNestedControlContainer>
-                                    <dx:ASPxComboBox ID="cmbLeaveType" runat="server" Width="100%" Theme="Office365" 
+                                    <dx:ASPxComboBox ID="cmbLeaveType" runat="server" Width="100%" 
                                         DropDownStyle="DropDownList" IncrementalFilteringMode="Contains">
                                         <Items>
                                             <dx:ListEditItem Text="Vacation" Value="Vacation" />
@@ -56,7 +56,7 @@
                         <dx:LayoutItem Caption="Start Date" RequiredMarkDisplayMode="Required">
                             <LayoutItemNestedControlCollection>
                                 <dx:LayoutItemNestedControlContainer>
-                                    <dx:ASPxDateEdit ID="dateStart" runat="server" Width="100%" Theme="Office365"
+                                    <dx:ASPxDateEdit ID="dateStart" runat="server" Width="100%" 
                                         UseMaskBehavior="true" DisplayFormatString="d" EditFormatString="d">
                                         <ValidationSettings Display="Dynamic" SetFocusOnError="true" ErrorDisplayMode="ImageWithTooltip">
                                             <RequiredField IsRequired="true" ErrorText="Start date is required" />
@@ -69,7 +69,7 @@
                         <dx:LayoutItem Caption="End Date" RequiredMarkDisplayMode="Required">
                             <LayoutItemNestedControlCollection>
                                 <dx:LayoutItemNestedControlContainer>
-                                    <dx:ASPxDateEdit ID="dateEnd" runat="server" Width="100%" Theme="Office365"
+                                    <dx:ASPxDateEdit ID="dateEnd" runat="server" Width="100%" 
                                         UseMaskBehavior="true" DisplayFormatString="d" EditFormatString="d">
                                         <ValidationSettings Display="Dynamic" SetFocusOnError="true" ErrorDisplayMode="ImageWithTooltip">
                                             <RequiredField IsRequired="true" ErrorText="End date is required" />
@@ -86,7 +86,7 @@
                         <dx:LayoutItem Caption="Reason for Leave" RequiredMarkDisplayMode="Required">
                             <LayoutItemNestedControlCollection>
                                 <dx:LayoutItemNestedControlContainer>
-                                    <dx:ASPxMemo ID="txtReason" runat="server" Width="100%" Height="100px" Theme="Office365">
+                                    <dx:ASPxMemo ID="txtReason" runat="server" Width="100%" Height="100px" >
                                         <ValidationSettings Display="Dynamic" SetFocusOnError="true" ErrorDisplayMode="ImageWithTooltip">
                                             <RequiredField IsRequired="true" ErrorText="Reason is required" />
                                         </ValidationSettings>
@@ -103,14 +103,14 @@
                             <div style="display: flex; gap: 10px; justify-content: flex-end;">
                                 <dx:ASPxButton ID="btnSubmit" runat="server" 
                                     Text="Submit Request" 
-                                    Theme="Office365" 
+                                    
                                     OnClick="btnSubmit_Click"
                                     CssClass="btn-primary">
                                     <Image IconID="actions_apply_16x16"></Image>
                                 </dx:ASPxButton>
                                 <dx:ASPxButton ID="btnClear" runat="server" 
                                     Text="Clear Form" 
-                                    Theme="Office365" 
+                                    
                                     OnClick="btnClear_Click"
                                     CausesValidation="false">
                                     <Image IconID="actions_remove_16x16"></Image>
@@ -130,7 +130,7 @@
         </p>
 
         <dx:ASPxGridView ID="gridRecentRequests" runat="server" 
-            Theme="Office365" 
+            
             Width="100%"
             KeyFieldName="Id"
             AutoGenerateColumns="False">

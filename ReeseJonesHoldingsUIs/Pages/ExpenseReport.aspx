@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ExpenseReport.aspx.cs" Inherits="ReeseJonesHoldingsUIs.Pages.ExpenseReportPage" MasterPageFile="~/Site.Master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ExpenseReport.aspx.cs" Inherits="ReeseJonesHoldingsUIs.Pages.ExpenseReportPage" MasterPageFile="~/Site.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <asp:HiddenField ID="hfExpenseReports" runat="server" />
@@ -17,7 +17,7 @@
         </dx:ASPxLabel>
 
         <dx:ASPxGridView ID="gridExpenses" runat="server" 
-            Theme="Office365" 
+            
             Width="100%"
             KeyFieldName="Id"
             AutoGenerateColumns="False"

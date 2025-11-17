@@ -1,4 +1,4 @@
-<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="ReeseJonesHoldingsUIs.SiteMaster" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="ReeseJonesHoldingsUIs.SiteMaster" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -21,7 +21,7 @@
             <p>DevExpress UI Demo Collection</p>
         </div>
         
-        <dx:ASPxMenu ID="mainMenu" runat="server" Theme="Office365" Orientation="Horizontal" 
+        <dx:ASPxMenu ID="mainMenu" runat="server" Orientation="Horizontal" 
             Width="100%" EnableAdaptivity="true" AdaptivityAutoHideRootItems="true">
             <Items>
                 <dx:MenuItem Text="Home" NavigateUrl="~/Default.aspx">
@@ -52,7 +52,7 @@
         
         <div class="site-footer">
             <dx:ASPxLabel ID="lblFooter" runat="server" 
-                Text="DevExpress v25.1.6 Trial Demo | © 2025 Reese Jones Holdings" 
+                Text="DevExpress v25.1.6 Trial Demo | Â© 2025 Reese Jones Holdings" 
                 ForeColor="White" />
         </div>
     </form>

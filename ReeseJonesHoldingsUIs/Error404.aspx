@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Error404.aspx.cs" Inherits="ReeseJonesHoldingsUIs.Error404" MasterPageFile="~/Site.Master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Error404.aspx.cs" Inherits="ReeseJonesHoldingsUIs.Error404" MasterPageFile="~/Site.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="error-container">
@@ -15,7 +15,7 @@
         
         <dx:ASPxButton ID="btnHome" runat="server" 
             Text="Return to Home" 
-            Theme="Office365"
+            
             OnClick="btnHome_Click"
             CssClass="btn-primary">
             <Image IconID="actions_home_16x16"></Image>

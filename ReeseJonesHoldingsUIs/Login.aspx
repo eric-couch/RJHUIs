@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="ReeseJonesHoldingsUIs.Login" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="ReeseJonesHoldingsUIs.Login" %>
 
 <%@ Register Assembly="DevExpress.Web.v25.1, Version=25.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
 
@@ -126,7 +126,7 @@
                 <dx:ASPxTextBox ID="txtUsername" runat="server" 
                     Width="100%" 
                     Height="44px"
-                    Theme="Office365"
+                    
                     NullText="Enter your username">
                     <ValidationSettings Display="Dynamic" ErrorDisplayMode="ImageWithTooltip" ValidationGroup="LoginValidation">
                         <RequiredField IsRequired="true" ErrorText="Username is required" />
@@ -141,7 +141,7 @@
                 <dx:ASPxTextBox ID="txtPassword" runat="server" 
                     Width="100%" 
                     Height="44px"
-                    Theme="Office365"
+                    
                     Password="true"
                     NullText="Enter your password">
                     <ValidationSettings Display="Dynamic" ErrorDisplayMode="ImageWithTooltip" ValidationGroup="LoginValidation">
@@ -157,7 +157,7 @@
                 <dx:ASPxComboBox ID="cboRole" runat="server" 
                     Width="100%" 
                     Height="44px"
-                    Theme="Office365"
+                    
                     NullText="Select your role">
                     <Items>
                         <dx:ListEditItem Text="User" Value="User" />
@@ -173,7 +173,7 @@
             <div class="form-group">
                 <dx:ASPxButton ID="btnLogin" runat="server" 
                     Text="Sign In" 
-                    Theme="Office365"
+                    
                     CssClass="login-button"
                     OnClick="btnLogin_Click"
                     ValidationGroup="LoginValidation">

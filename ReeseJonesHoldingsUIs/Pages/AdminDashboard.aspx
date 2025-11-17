@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AdminDashboard.aspx.cs" Inherits="ReeseJonesHoldingsUIs.Pages.AdminDashboard" MasterPageFile="~/Site.Master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AdminDashboard.aspx.cs" Inherits="ReeseJonesHoldingsUIs.Pages.AdminDashboard" MasterPageFile="~/Site.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <asp:HiddenField ID="hfLeaveRequests" runat="server" />
@@ -13,7 +13,7 @@
         </div>
         <dx:ASPxButton ID="btnRefresh" runat="server" 
             Text="Refresh Data" 
-            Theme="Office365"
+            
             OnClick="btnRefresh_Click"
             CssClass="btn-primary">
             <Image IconID="actions_refresh_16x16"></Image>

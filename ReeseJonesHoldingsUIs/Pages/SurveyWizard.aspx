@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SurveyWizard.aspx.cs" Inherits="ReeseJonesHoldingsUIs.Pages.SurveyWizard" MasterPageFile="~/Site.Master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SurveyWizard.aspx.cs" Inherits="ReeseJonesHoldingsUIs.Pages.SurveyWizard" MasterPageFile="~/Site.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <asp:HiddenField ID="hfSurveys" runat="server" />
@@ -17,7 +17,7 @@
         </dx:ASPxLabel>
 
         <dx:ASPxPageControl ID="pageControl" runat="server" 
-            Theme="Office365" 
+            
             Width="100%"
             ActiveTabIndex="0"
             EnableCallBacks="true">
@@ -32,12 +32,12 @@
                                     Please provide your basic information below.
                                 </p>
 
-                                <dx:ASPxFormLayout ID="formDemographics" runat="server" Theme="Office365">
+                                <dx:ASPxFormLayout ID="formDemographics" runat="server" >
                                     <Items>
                                         <dx:LayoutItem Caption="Full Name" RequiredMarkDisplayMode="Required">
                                             <LayoutItemNestedControlCollection>
                                                 <dx:LayoutItemNestedControlContainer>
-                                                    <dx:ASPxTextBox ID="txtName" runat="server" Width="100%" Theme="Office365">
+                                                    <dx:ASPxTextBox ID="txtName" runat="server" Width="100%" >
                                                         <ValidationSettings Display="Dynamic" SetFocusOnError="true" ErrorDisplayMode="ImageWithTooltip">
                                                             <RequiredField IsRequired="true" ErrorText="Name is required" />
                                                         </ValidationSettings>
@@ -51,7 +51,7 @@
                                                 <dx:LayoutItemNestedControlContainer>
                                                     <dx:ASPxSpinEdit ID="spinAge" runat="server" 
                                                         Width="100%" 
-                                                        Theme="Office365"
+                                                        
                                                         MinValue="18"
                                                         MaxValue="120"
                                                         Number="25">
@@ -66,7 +66,7 @@
                                         <dx:LayoutItem Caption="Location" RequiredMarkDisplayMode="Required">
                                             <LayoutItemNestedControlCollection>
                                                 <dx:LayoutItemNestedControlContainer>
-                                                    <dx:ASPxTextBox ID="txtLocation" runat="server" Width="100%" Theme="Office365">
+                                                    <dx:ASPxTextBox ID="txtLocation" runat="server" Width="100%" >
                                                         <ValidationSettings Display="Dynamic" SetFocusOnError="true" ErrorDisplayMode="ImageWithTooltip">
                                                             <RequiredField IsRequired="true" ErrorText="Location is required" />
                                                         </ValidationSettings>
@@ -80,7 +80,7 @@
                                 <div style="margin-top: 20px; text-align: right;">
                                     <dx:ASPxButton ID="btnNextDemographics" runat="server" 
                                         Text="Next Step" 
-                                        Theme="Office365"
+                                        
                                         OnClick="btnNextDemographics_Click"
                                         CssClass="btn-primary">
                                         <Image IconID="actions_next_16x16"></Image>
@@ -100,13 +100,13 @@
                                     Tell us about your preferences and expectations.
                                 </p>
 
-                                <dx:ASPxFormLayout ID="formPreferences" runat="server" Theme="Office365">
+                                <dx:ASPxFormLayout ID="formPreferences" runat="server" >
                                     <Items>
                                         <dx:LayoutItem Caption="How satisfied are you with our service?" RequiredMarkDisplayMode="Required">
                                             <LayoutItemNestedControlCollection>
                                                 <dx:LayoutItemNestedControlContainer>
                                                     <dx:ASPxRadioButtonList ID="radioPreference" runat="server" 
-                                                        Theme="Office365"
+                                                        
                                                         RepeatDirection="Vertical">
                                                         <Items>
                                                             <dx:ListEditItem Text="Very Satisfied" Value="Very Satisfied" />
@@ -129,7 +129,7 @@
                                                     <dx:ASPxMemo ID="txtComments" runat="server" 
                                                         Width="100%" 
                                                         Height="100px" 
-                                                        Theme="Office365"
+                                                        
                                                         NullText="Optional - Share any additional thoughts...">
                                                     </dx:ASPxMemo>
                                                 </dx:LayoutItemNestedControlContainer>
@@ -141,14 +141,14 @@
                                 <div style="margin-top: 20px; display: flex; justify-content: space-between;">
                                     <dx:ASPxButton ID="btnPreviousPreferences" runat="server" 
                                         Text="Previous Step" 
-                                        Theme="Office365"
+                                        
                                         OnClick="btnPreviousPreferences_Click"
                                         CausesValidation="false">
                                         <Image IconID="actions_prev_16x16"></Image>
                                     </dx:ASPxButton>
                                     <dx:ASPxButton ID="btnNextPreferences" runat="server" 
                                         Text="Next Step" 
-                                        Theme="Office365"
+                                        
                                         OnClick="btnNextPreferences_Click"
                                         CssClass="btn-primary">
                                         <Image IconID="actions_next_16x16"></Image>
@@ -192,7 +192,7 @@
                                 <div style="margin-top: 20px; display: flex; justify-content: space-between;">
                                     <dx:ASPxButton ID="btnPreviousConfirmation" runat="server" 
                                         Text="Previous Step" 
-                                        Theme="Office365"
+                                        
                                         OnClick="btnPreviousConfirmation_Click"
                                         CausesValidation="false">
                                         <Image IconID="actions_prev_16x16"></Image>
@@ -200,14 +200,14 @@
                                     <div style="display: flex; gap: 10px;">
                                         <dx:ASPxButton ID="btnReset" runat="server" 
                                             Text="Reset Survey" 
-                                            Theme="Office365"
+                                            
                                             OnClick="btnReset_Click"
                                             CausesValidation="false">
                                             <Image IconID="actions_refresh_16x16"></Image>
                                         </dx:ASPxButton>
                                         <dx:ASPxButton ID="btnSubmit" runat="server" 
                                             Text="Submit Survey" 
-                                            Theme="Office365"
+                                            
                                             OnClick="btnSubmit_Click"
                                             CausesValidation="false"
                                             CssClass="btn-primary">

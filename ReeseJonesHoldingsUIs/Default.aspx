@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="ReeseJonesHoldingsUIs.Default" MasterPageFile="~/Site.Master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="ReeseJonesHoldingsUIs.Default" MasterPageFile="~/Site.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="hero-section">
@@ -16,7 +16,7 @@
             <p>Submit and manage employee leave requests with date pickers, validation, and status tracking.</p>
             <dx:ASPxButton ID="btnLeaveRequest" runat="server" 
                 Text="View Demo" 
-                Theme="Office365" 
+                
                 OnClick="btnLeaveRequest_Click"
                 CssClass="btn-primary">
             </dx:ASPxButton>
@@ -31,7 +31,7 @@
             <p>Create, edit, and delete expense entries with inline editing and automatic totals calculation.</p>
             <dx:ASPxButton ID="btnExpenseReport" runat="server" 
                 Text="View Demo" 
-                Theme="Office365" 
+                
                 OnClick="btnExpenseReport_Click"
                 CssClass="btn-primary">
             </dx:ASPxButton>
@@ -46,7 +46,7 @@
             <p>Multi-step survey form with tabbed navigation, form validation, and data persistence.</p>
             <dx:ASPxButton ID="btnSurveyWizard" runat="server" 
                 Text="View Demo" 
-                Theme="Office365" 
+                
                 OnClick="btnSurveyWizard_Click"
                 CssClass="btn-primary">
             </dx:ASPxButton>
@@ -61,7 +61,7 @@
             <p>Executive dashboard with KPI metrics, interactive charts, and data visualizations.</p>
             <dx:ASPxButton ID="btnAdminDashboard" runat="server" 
                 Text="View Demo" 
-                Theme="Office365" 
+                
                 OnClick="btnAdminDashboard_Click"
                 CssClass="btn-primary">
             </dx:ASPxButton>
@@ -76,7 +76,7 @@
             <p>Role-based authentication with username, password, and role selection for user access.</p>
             <dx:ASPxButton ID="btnLogin" runat="server" 
                 Text="View Demo" 
-                Theme="Office365" 
+                
                 OnClick="btnLogin_Click"
                 CssClass="btn-primary">
             </dx:ASPxButton>
