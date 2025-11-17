@@ -38,41 +38,32 @@ jobs:
           
           if ([string]::IsNullOrWhiteSpace($apiKey)) {
             Write-Host "ERROR: DEVEXPRESS_NUGET_KEY secret is empty or not set!"
+            Write-Host "You need to set the DEVEXPRESS_NUGET_KEY secret in GitHub."
+            Write-Host "Get it from: https://nuget.devexpress.com/"
             exit 1
           }
           
           Write-Host "API Key received - Length: $($apiKey.Length) chars"
-          Write-Host "API Key first 20 chars: $($apiKey.Substring(0, [Math]::Min(20, $apiKey.Length)))..."
+          Write-Host "API Key first 10 chars: $($apiKey.Substring(0, [Math]::Min(10, $apiKey.Length)))..."
           
           $nugetConfigPath = Join-Path $env:GITHUB_WORKSPACE "NuGet.Config"
+          
+          # DevExpress uses the API key in the URL itself for v3 feeds
+          $devExpressUrl = "https://nuget.devexpress.com/$apiKey/api/v3/index.json"
           
           $xml = '<?xml version="1.0" encoding="utf-8"?>'
           $xml += '<configuration>'
           $xml += '<packageSources>'
           $xml += '<clear />'
           $xml += '<add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />'
-          $xml += '<add key="DevExpress" value="https://nuget.devexpress.com/api" />'
+          $xml += "<add key=""DevExpress"" value=""$devExpressUrl"" protocolVersion=""3"" />"
           $xml += '</packageSources>'
-          $xml += '<packageSourceCredentials>'
-          $xml += '<DevExpress>'
-          $xml += '<add key="Username" value="DevExpress" />'
-          $xml += "<add key=""ClearTextPassword"" value=""$apiKey"" />"
-          $xml += '</DevExpress>'
-          $xml += '</packageSourceCredentials>'
           $xml += '</configuration>'
           
           [System.IO.File]::WriteAllText($nugetConfigPath, $xml, [System.Text.Encoding]::UTF8)
           
           Write-Host "Created NuGet.Config at: $nugetConfigPath"
-          
-          $verifyContent = Get-Content $nugetConfigPath -Raw
-          $hasPassword = $verifyContent -match 'ClearTextPassword.*value=".+"'
-          Write-Host "Config has ClearTextPassword: $hasPassword"
-          
-          if (-not $hasPassword) {
-            Write-Host "ERROR: Password was not written to config file!"
-            exit 1
-          }
+          Write-Host "DevExpress feed URL configured (API key embedded in URL)"
 
       - name: Restore NuGet packages
         shell: pwsh
