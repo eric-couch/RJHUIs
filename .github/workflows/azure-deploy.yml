@@ -127,13 +127,25 @@ jobs:
 
       - name: Build solution
         shell: pwsh
+        env:
+          DEVEXPRESS_NUGET_API_KEY: ${{ secrets.DEVEXPRESS_NUGET_KEY }}
         run: |
           Write-Host "Building solution..."
+          
+          # Verify license file exists
+          $licensePath = Join-Path $env:APPDATA "DevExpress\DevExpress_License.txt"
+          if (Test-Path $licensePath) {
+            $licenseSize = (Get-Item $licensePath).Length
+            Write-Host "License file found: $licensePath ($licenseSize bytes)"
+          } else {
+            Write-Host "WARNING: License file not found at $licensePath"
+          }
           
           # Build and publish the web application
           msbuild ReeseJonesHoldingsUIs\ReeseJonesHoldingsUIs.csproj `
             /p:Configuration=Release `
             /p:Platform=AnyCPU `
+            /p:DevExpressLicenseKey="${{ secrets.DEVEXPRESS_LICENSE_KEY }}" `
             /p:DeployOnBuild=true `
             /p:PublishUrl=publish `
             /p:WebPublishMethod=FileSystem `
