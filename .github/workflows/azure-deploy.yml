@@ -165,6 +165,33 @@ jobs:
         with:
           name: webapp
 
+      - name: Verify artifact contents
+        shell: pwsh
+        run: |
+          Write-Host "Verifying downloaded artifact..."
+          
+          $currentPath = Get-Location
+          Write-Host "Current path: $currentPath"
+          
+          # List all files
+          Write-Host "`nAll files in artifact:"
+          Get-ChildItem -Recurse -File | Select-Object -First 30 | ForEach-Object { Write-Host "  $($_.FullName)" }
+          
+          # Check bin folder
+          if (Test-Path "bin") {
+            Write-Host "`nBin folder exists!"
+            $dxDlls = Get-ChildItem -Path "bin" -Filter "DevExpress*.dll"
+            Write-Host "DevExpress DLLs in bin: $($dxDlls.Count)"
+            $dxDlls | ForEach-Object { Write-Host "  - $($_.Name) ($([math]::Round($_.Length/1KB, 2)) KB)" }
+          } else {
+            Write-Host "`nWARNING: No bin folder found in artifact!"
+          }
+          
+          # Check for Web.config
+          if (Test-Path "Web.config") {
+            Write-Host "`nWeb.config found"
+          }
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
