@@ -32,15 +32,16 @@ jobs:
         run: |
           Write-Host "Configuring DevExpress NuGet authentication..."
           
-          # Create a custom NuGet.config in the solution directory with embedded credentials
+          # Create NuGet.config with proper credentials format
+          $apiKey = "${{ secrets.DEVEXPRESS_NUGET_KEY }}"
+          
+          # Create config in solution root
           $nugetConfigPath = Join-Path $env:GITHUB_WORKSPACE "NuGet.Config"
           
-          $nugetConfig = @"
+          # Use proper XML encoding for the password
+          $xmlConfig = [xml]@"
           <?xml version="1.0" encoding="utf-8"?>
           <configuration>
-            <config>
-              <add key="disableSourceControlIntegration" value="true" />
-            </config>
             <packageSources>
               <clear />
               <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
@@ -49,35 +50,49 @@ jobs:
             <packageSourceCredentials>
               <DevExpress>
                 <add key="Username" value="DevExpress" />
-                <add key="ClearTextPassword" value="${{ secrets.DEVEXPRESS_NUGET_KEY }}" />
+                <add key="ClearTextPassword" value="PLACEHOLDER" />
               </DevExpress>
             </packageSourceCredentials>
-            <disabledPackageSources />
           </configuration>
           "@
           
-          $nugetConfig | Set-Content $nugetConfigPath -Encoding UTF8
+          # Replace placeholder with actual key
+          $xmlConfig.configuration.packageSourceCredentials.DevExpress.add | Where-Object { $_.key -eq "ClearTextPassword" } | ForEach-Object { $_.value = $apiKey }
+          
+          # Save with UTF8 encoding
+          $xmlConfig.Save($nugetConfigPath)
+          
           Write-Host "Created NuGet.Config at: $nugetConfigPath"
+          Write-Host "API Key length: $($apiKey.Length)"
           
-          # Display config (with password masked)
-          $displayConfig = $nugetConfig -replace '(<ClearTextPassword value=")[^"]+(")', '$1****$2'
-          Write-Host "Config content:`n$displayConfig"
-          
-          # Disable credential providers that interfere
-          $env:NUGET_PLUGIN_HANDSHAKE_TIMEOUT_IN_SECONDS = "1"
-          $env:NUGET_PLUGIN_REQUEST_TIMEOUT_IN_SECONDS = "1"
+          # Verify file was created
+          if (Test-Path $nugetConfigPath) {
+            Write-Host "Config file verified"
+            $content = Get-Content $nugetConfigPath -Raw
+            Write-Host "Has ClearTextPassword: $($content -match 'ClearTextPassword')"
+            Write-Host "Has DevExpress key: $($content -match 'DevExpress')"
+          }
 
       - name: Restore NuGet packages
         shell: pwsh
         run: |
-          Write-Host "Starting NuGet restore..."
-          
-          # Disable credential providers
-          $env:NUGET_PLUGIN_HANDSHAKE_TIMEOUT_IN_SECONDS = "1"
-          $env:NUGET_PLUGIN_REQUEST_TIMEOUT_IN_SECONDS = "1"
+          Write-Host "Starting NuGet restore with explicit config..."
           
           $nugetConfigPath = Join-Path $env:GITHUB_WORKSPACE "NuGet.Config"
-          nuget restore ReeseJonesHoldingsUIs.sln -ConfigFile "$nugetConfigPath" -Verbosity detailed -NonInteractive
+          
+          if (Test-Path $nugetConfigPath) {
+            Write-Host "Using config: $nugetConfigPath"
+          } else {
+            Write-Host "ERROR: Config not found!"
+            exit 1
+          }
+          
+          # Use explicit config file
+          nuget restore ReeseJonesHoldingsUIs.sln `
+            -ConfigFile $nugetConfigPath `
+            -NonInteractive `
+            -Verbosity detailed `
+            -NoCache
 
       - name: Build solution
         run: msbuild ReeseJonesHoldingsUIs.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:OutputPath=.\publish
