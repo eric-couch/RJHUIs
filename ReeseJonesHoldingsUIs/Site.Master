@@ -1,0 +1,60 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="ReeseJonesHoldingsUIs.SiteMaster" %>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reese Jones Holdings - UI Demo</title>
+    <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="scriptManager" runat="server" EnablePageMethods="true">
+            <Scripts>
+                <asp:ScriptReference Path="~/Scripts/localStorageHelper.js" />
+            </Scripts>
+        </asp:ScriptManager>
+        
+        <div class="site-header">
+            <h1>Reese Jones Holdings</h1>
+            <p>DevExpress UI Demo Collection</p>
+        </div>
+        
+        <dx:ASPxMenu ID="mainMenu" runat="server" Theme="Office365" Orientation="Horizontal" 
+            Width="100%" EnableAdaptivity="true" AdaptivityAutoHideRootItems="true">
+            <Items>
+                <dx:MenuItem Text="Home" NavigateUrl="~/Default.aspx">
+                    <Image IconID="actions_home_16x16" />
+                </dx:MenuItem>
+                <dx:MenuItem Text="Leave Request" NavigateUrl="~/Pages/LeaveRequest.aspx">
+                    <Image IconID="scheduling_calendar_16x16" />
+                </dx:MenuItem>
+                <dx:MenuItem Text="Expense Report" NavigateUrl="~/Pages/ExpenseReport.aspx">
+                    <Image IconID="reports_report_16x16" />
+                </dx:MenuItem>
+                <dx:MenuItem Text="Survey Wizard" NavigateUrl="~/Pages/SurveyWizard.aspx">
+                    <Image IconID="business_task_16x16" />
+                </dx:MenuItem>
+                <dx:MenuItem Text="Admin Dashboard" NavigateUrl="~/Pages/AdminDashboard.aspx">
+                    <Image IconID="dashboards_gauge_16x16" />
+                </dx:MenuItem>
+                <dx:MenuItem Text="Login" NavigateUrl="~/Login.aspx">
+                    <Image IconID="security_key_16x16" />
+                </dx:MenuItem>
+            </Items>
+        </dx:ASPxMenu>
+        
+        <div class="container-fluid main-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+        
+        <div class="site-footer">
+            <dx:ASPxLabel ID="lblFooter" runat="server" 
+                Text="DevExpress v25.1.6 Trial Demo | © 2025 Reese Jones Holdings" 
+                ForeColor="White" />
+        </div>
+    </form>
+</body>
+</html>

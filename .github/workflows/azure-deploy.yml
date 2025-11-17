@@ -1,0 +1,77 @@
+name: Deploy to Azure Web App
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: ReeseJonesHoldingsUIs
+  AZURE_WEBAPP_PACKAGE_PATH: '.'
+  DOTNET_VERSION: '4.8.x'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
+        with:
+          nuget-version: 'latest'
+
+      - name: Configure DevExpress NuGet Feed
+        shell: pwsh
+        run: |
+          $nugetConfigPath = Join-Path $env:GITHUB_WORKSPACE "nuget.config"
+          if (Test-Path $nugetConfigPath) {
+            Write-Host "Found nuget.config at $nugetConfigPath"
+            # Replace environment variable placeholder with actual secret
+            $content = Get-Content $nugetConfigPath -Raw
+            $content = $content -replace '%DEVEXPRESS_NUGET_KEY%', '${{ secrets.DEVEXPRESS_NUGET_KEY }}'
+            $content | Set-Content $nugetConfigPath
+            Write-Host "Updated nuget.config with DevExpress API key"
+          } else {
+            Write-Host "nuget.config not found, creating one..."
+            nuget sources Add -Name "DevExpress" -Source "https://nuget.devexpress.com/api" -UserName "DevExpress" -Password "${{ secrets.DEVEXPRESS_NUGET_KEY }}"
+          }
+
+      - name: Restore NuGet packages
+        run: nuget restore ReeseJonesHoldingsUIs.sln
+
+      - name: Build solution
+        run: msbuild ReeseJonesHoldingsUIs.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:OutputPath=.\publish
+
+      - name: Upload artifact for deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: webapp
+          path: publish
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: webapp
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .
