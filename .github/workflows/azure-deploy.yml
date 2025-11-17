@@ -87,13 +87,48 @@ jobs:
             -NoCache
 
       - name: Build solution
-        run: msbuild ReeseJonesHoldingsUIs.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:OutputPath=.\publish
+        shell: pwsh
+        run: |
+          Write-Host "Building solution..."
+          
+          # Build the solution
+          msbuild ReeseJonesHoldingsUIs\ReeseJonesHoldingsUIs.csproj `
+            /p:Configuration=Release `
+            /p:Platform=AnyCPU `
+            /p:DeployOnBuild=true `
+            /p:PublishUrl=publish `
+            /p:WebPublishMethod=FileSystem `
+            /p:DeleteExistingFiles=true `
+            /p:_FindDependencies=false `
+            /t:Rebuild `
+            /verbosity:minimal
+          
+          Write-Host "Build completed"
+          
+          # Verify publish folder exists
+          $publishPath = Join-Path $env:GITHUB_WORKSPACE "ReeseJonesHoldingsUIs\publish"
+          if (Test-Path $publishPath) {
+            Write-Host "Publish folder created at: $publishPath"
+            $fileCount = (Get-ChildItem -Path $publishPath -Recurse -File | Measure-Object).Count
+            Write-Host "Total files in publish folder: $fileCount"
+            
+            # Check for DevExpress DLLs
+            $dxDlls = Get-ChildItem -Path "$publishPath\bin" -Filter "DevExpress*.dll" -ErrorAction SilentlyContinue
+            if ($dxDlls) {
+              Write-Host "Found $($dxDlls.Count) DevExpress DLLs in bin folder"
+            } else {
+              Write-Host "WARNING: No DevExpress DLLs found in bin folder!"
+            }
+          } else {
+            Write-Host "ERROR: Publish folder not created!"
+            exit 1
+          }
 
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
           name: webapp
-          path: publish
+          path: ReeseJonesHoldingsUIs/publish
 
   deploy:
     runs-on: windows-latest
