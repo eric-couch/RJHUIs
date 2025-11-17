@@ -30,21 +30,37 @@ jobs:
       - name: Configure DevExpress NuGet Feed
         shell: pwsh
         run: |
+          Write-Host "Configuring DevExpress NuGet authentication..."
+          
+          # Method 1: Update existing nuget.config
           $nugetConfigPath = Join-Path $env:GITHUB_WORKSPACE "nuget.config"
           if (Test-Path $nugetConfigPath) {
-            Write-Host "Found nuget.config at $nugetConfigPath"
-            # Replace environment variable placeholder with actual secret
+            Write-Host "Found nuget.config at: $nugetConfigPath"
             $content = Get-Content $nugetConfigPath -Raw
             $content = $content -replace '%DEVEXPRESS_NUGET_KEY%', '${{ secrets.DEVEXPRESS_NUGET_KEY }}'
-            $content | Set-Content $nugetConfigPath
-            Write-Host "Updated nuget.config with DevExpress API key"
-          } else {
-            Write-Host "nuget.config not found, creating one..."
-            nuget sources Add -Name "DevExpress" -Source "https://nuget.devexpress.com/api" -UserName "DevExpress" -Password "${{ secrets.DEVEXPRESS_NUGET_KEY }}"
+            $content | Set-Content $nugetConfigPath -Encoding UTF8
+            Write-Host "Updated nuget.config with API key"
           }
+          
+          # Method 2: Add DevExpress source with credentials using NuGet CLI
+          # This ensures credentials are available regardless of config file location
+          Write-Host "Adding DevExpress source with credentials..."
+          nuget sources Remove -Name "DevExpress" -ErrorAction SilentlyContinue
+          nuget sources Add -Name "DevExpress" `
+            -Source "https://nuget.devexpress.com/api" `
+            -UserName "DevExpress" `
+            -Password "${{ secrets.DEVEXPRESS_NUGET_KEY }}" `
+            -StorePasswordInClearText `
+            -ConfigFile "$nugetConfigPath"
+          
+          Write-Host "NuGet sources configured:"
+          nuget sources List
 
       - name: Restore NuGet packages
-        run: nuget restore ReeseJonesHoldingsUIs.sln
+        shell: pwsh
+        run: |
+          Write-Host "Starting NuGet restore..."
+          nuget restore ReeseJonesHoldingsUIs.sln -Verbosity detailed
 
       - name: Build solution
         run: msbuild ReeseJonesHoldingsUIs.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:OutputPath=.\publish

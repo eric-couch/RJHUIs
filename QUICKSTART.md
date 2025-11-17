@@ -96,11 +96,32 @@ Navigate to non-existent URL: http://localhost:xxxxx/NonExistent
 ## Next Steps
 
 ### Deploy to Azure
+
+#### 1. Set Up GitHub Secrets
+Go to your repository on GitHub: Settings → Secrets and variables → Actions → New repository secret
+
+Add these secrets:
+- **DEVEXPRESS_NUGET_KEY**: Your DevExpress NuGet API key (same value as your local environment variable)
+- **AZURE_WEBAPP_PUBLISH_PROFILE**: Download from Azure Portal → Your Web App → Get publish profile
+
+#### 2. Create Azure Web App
 1. Create Azure Web App (Windows, .NET Framework 4.8)
-2. Add GitHub secrets:
-   - DEVEXPRESS_NUGET_KEY
-   - AZURE_WEBAPP_PUBLISH_PROFILE
-3. Push to main branch
+2. Name it `ReeseJonesHoldingsUIs` (or update `AZURE_WEBAPP_NAME` in `.github/workflows/azure-deploy.yml`)
+
+#### 3. Deploy
+Push to main branch - the GitHub Actions workflow will automatically:
+- Restore NuGet packages with DevExpress authentication
+- Build the solution
+- Deploy to Azure
+
+### Verify GitHub Secrets Setup
+Your DevExpress NuGet key should be the same value you use locally:
+```powershell
+# Check your local key (first 50 chars)
+$env:DEVEXPRESS_NUGET_KEY.Substring(0, 50)
+```
+
+Copy the **entire** key value to GitHub Secrets as `DEVEXPRESS_NUGET_KEY`.
 
 ### Customize
 - Modify `Content/Site.css` for styling
