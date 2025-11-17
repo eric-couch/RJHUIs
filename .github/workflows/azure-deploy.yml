@@ -32,7 +32,7 @@ jobs:
         run: |
           Write-Host "Configuring DevExpress NuGet authentication..."
           
-          # Method 1: Update existing nuget.config
+          # Update existing nuget.config with credentials
           $nugetConfigPath = Join-Path $env:GITHUB_WORKSPACE "nuget.config"
           if (Test-Path $nugetConfigPath) {
             Write-Host "Found nuget.config at: $nugetConfigPath"
@@ -42,25 +42,42 @@ jobs:
             Write-Host "Updated nuget.config with API key"
           }
           
-          # Method 2: Add DevExpress source with credentials using NuGet CLI
-          # This ensures credentials are available regardless of config file location
-          Write-Host "Adding DevExpress source with credentials..."
-          nuget sources Remove -Name "DevExpress" -ErrorAction SilentlyContinue
-          nuget sources Add -Name "DevExpress" `
+          # Also set up user-level NuGet config with credentials
+          Write-Host "Configuring user-level NuGet credentials..."
+          $userNuGetConfig = "$env:APPDATA\NuGet\NuGet.Config"
+          $userNuGetDir = Split-Path $userNuGetConfig -Parent
+          
+          if (-not (Test-Path $userNuGetDir)) {
+            New-Item -ItemType Directory -Path $userNuGetDir -Force | Out-Null
+          }
+          
+          # Remove existing DevExpress source if it exists
+          nuget sources Remove -Name "DevExpress" 2>$null
+          
+          # Add DevExpress source with credentials to user config
+          nuget sources Add `
+            -Name "DevExpress" `
             -Source "https://nuget.devexpress.com/api" `
-            -UserName "DevExpress" `
-            -Password "${{ secrets.DEVEXPRESS_NUGET_KEY }}" `
-            -StorePasswordInClearText `
-            -ConfigFile "$nugetConfigPath"
+            -UserName "ericcouch@yahoo.com" `
+            -Password "Y_2nhgDVTa:65Ac" `
+            -StorePasswordInClearText
           
           Write-Host "NuGet sources configured:"
           nuget sources List
+          
+          Write-Host "`nVerifying config files:"
+          if (Test-Path $nugetConfigPath) {
+            Write-Host "Workspace config exists: $nugetConfigPath"
+          }
+          if (Test-Path $userNuGetConfig) {
+            Write-Host "User config exists: $userNuGetConfig"
+          }
 
       - name: Restore NuGet packages
         shell: pwsh
         run: |
           Write-Host "Starting NuGet restore..."
-          nuget restore ReeseJonesHoldingsUIs.sln -Verbosity detailed
+          nuget restore ReeseJonesHoldingsUIs.sln -Verbosity detailed -NonInteractive
 
       - name: Build solution
         run: msbuild ReeseJonesHoldingsUIs.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:OutputPath=.\publish
