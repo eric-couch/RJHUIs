@@ -29,48 +29,49 @@ jobs:
 
       - name: Configure DevExpress NuGet Feed
         shell: pwsh
+        env:
+          DX_KEY: ${{ secrets.DEVEXPRESS_NUGET_KEY }}
         run: |
           Write-Host "Configuring DevExpress NuGet authentication..."
           
-          # Create NuGet.config with proper credentials format
-          $apiKey = "${{ secrets.DEVEXPRESS_NUGET_KEY }}"
+          $apiKey = $env:DX_KEY
           
-          # Create config in solution root
+          if ([string]::IsNullOrWhiteSpace($apiKey)) {
+            Write-Host "ERROR: DEVEXPRESS_NUGET_KEY secret is empty or not set!"
+            exit 1
+          }
+          
+          Write-Host "API Key received - Length: $($apiKey.Length) chars"
+          Write-Host "API Key first 20 chars: $($apiKey.Substring(0, [Math]::Min(20, $apiKey.Length)))..."
+          
           $nugetConfigPath = Join-Path $env:GITHUB_WORKSPACE "NuGet.Config"
           
-          # Use proper XML encoding for the password
-          $xmlConfig = [xml]@"
-          <?xml version="1.0" encoding="utf-8"?>
-          <configuration>
-            <packageSources>
-              <clear />
-              <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
-              <add key="DevExpress" value="https://nuget.devexpress.com/api" />
-            </packageSources>
-            <packageSourceCredentials>
-              <DevExpress>
-                <add key="Username" value="DevExpress" />
-                <add key="ClearTextPassword" value="PLACEHOLDER" />
-              </DevExpress>
-            </packageSourceCredentials>
-          </configuration>
-          "@
+          $xml = '<?xml version="1.0" encoding="utf-8"?>'
+          $xml += '<configuration>'
+          $xml += '<packageSources>'
+          $xml += '<clear />'
+          $xml += '<add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />'
+          $xml += '<add key="DevExpress" value="https://nuget.devexpress.com/api" />'
+          $xml += '</packageSources>'
+          $xml += '<packageSourceCredentials>'
+          $xml += '<DevExpress>'
+          $xml += '<add key="Username" value="DevExpress" />'
+          $xml += "<add key=""ClearTextPassword"" value=""$apiKey"" />"
+          $xml += '</DevExpress>'
+          $xml += '</packageSourceCredentials>'
+          $xml += '</configuration>'
           
-          # Replace placeholder with actual key
-          $xmlConfig.configuration.packageSourceCredentials.DevExpress.add | Where-Object { $_.key -eq "ClearTextPassword" } | ForEach-Object { $_.value = $apiKey }
-          
-          # Save with UTF8 encoding
-          $xmlConfig.Save($nugetConfigPath)
+          [System.IO.File]::WriteAllText($nugetConfigPath, $xml, [System.Text.Encoding]::UTF8)
           
           Write-Host "Created NuGet.Config at: $nugetConfigPath"
-          Write-Host "API Key length: $($apiKey.Length)"
           
-          # Verify file was created
-          if (Test-Path $nugetConfigPath) {
-            Write-Host "Config file verified"
-            $content = Get-Content $nugetConfigPath -Raw
-            Write-Host "Has ClearTextPassword: $($content -match 'ClearTextPassword')"
-            Write-Host "Has DevExpress key: $($content -match 'DevExpress')"
+          $verifyContent = Get-Content $nugetConfigPath -Raw
+          $hasPassword = $verifyContent -match 'ClearTextPassword.*value=".+"'
+          Write-Host "Config has ClearTextPassword: $hasPassword"
+          
+          if (-not $hasPassword) {
+            Write-Host "ERROR: Password was not written to config file!"
+            exit 1
           }
 
       - name: Restore NuGet packages
