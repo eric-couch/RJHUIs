@@ -38,7 +38,7 @@ jobs:
           }
           
           $licenseFile = Join-Path $licenseDir "DevExpress_License.txt"
-          $licenseKey = "${{ secrets.DEVEXPRESS_LICENSE_KEY }}"
+          $licenseKey = "${{ secrets.DEVEXPRESS_LICENSE }}"
           
           if ([string]::IsNullOrWhiteSpace($licenseKey)) {
             Write-Error "DEVEXPRESS_LICENSE_KEY secret is not set or is empty"
@@ -142,7 +142,7 @@ jobs:
           msbuild ReeseJonesHoldingsUIs\ReeseJonesHoldingsUIs.csproj `
             /p:Configuration=Release `
             /p:Platform=AnyCPU `
-            /p:DevExpressLicenseKey="${{ secrets.DEVEXPRESS_LICENSE_KEY }}" `
+            /p:DevExpressLicenseKey="${{ secrets.DEVEXPRESS_LICENSE }}" `
             /p:DeployOnBuild=true `
             /p:PublishUrl=publish `
             /p:WebPublishMethod=FileSystem `
