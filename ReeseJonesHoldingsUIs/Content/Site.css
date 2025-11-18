@@ -366,3 +366,252 @@ h3 {
     margin-bottom: 15px;
     font-weight: 600;
 }
+
+/* ========================================
+   DevExpress Custom Theme Styles
+   ======================================== */
+
+/* Buttons */
+.dxbButton,
+.dx-btn,
+.dxeButton {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 8px 20px !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dxbButton:hover,
+.dx-btn:hover,
+.dxeButton:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Text Boxes and Inputs */
+.dxeEditArea,
+.dxeEditAreaSys,
+.dxeTextBoxSys,
+.dxeEditArea_Office365 {
+    border: 1px solid #dee2e6 !important;
+    border-radius: 4px !important;
+    padding: 8px 12px !important;
+    background: white !important;
+    transition: border-color 0.3s ease !important;
+}
+
+.dxeEditArea:focus,
+.dxeEditAreaSys:focus,
+.dxeTextBoxSys:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1) !important;
+    outline: none !important;
+}
+
+/* ComboBox/DropDown */
+.dxeButtonEdit,
+.dxeButtonEditSys {
+    border: 1px solid #dee2e6 !important;
+    border-radius: 4px !important;
+    background: white !important;
+}
+
+.dxeButtonEditButton {
+    background: var(--light) !important;
+    border-left: 1px solid #dee2e6 !important;
+    border-radius: 0 4px 4px 0 !important;
+}
+
+.dxeButtonEditButton:hover {
+    background: #e9ecef !important;
+}
+
+/* GridView/Table */
+.dxgvControl,
+.dxgvTable {
+    border: 1px solid #dee2e6 !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+}
+
+.dxgvHeader,
+.dxgvHeaderRow {
+    background: linear-gradient(135deg, var(--dark) 0%, #495057 100%) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    padding: 12px 8px !important;
+    border-bottom: 2px solid var(--primary) !important;
+}
+
+.dxgvDataRow {
+    background: white !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    transition: background 0.2s ease !important;
+}
+
+.dxgvDataRow:hover {
+    background: #f8f9fa !important;
+}
+
+.dxgvSelectedRow {
+    background: rgba(0, 120, 212, 0.1) !important;
+}
+
+.dxgvFocusedRow {
+    background: rgba(0, 120, 212, 0.15) !important;
+}
+
+/* Form Layout */
+.dxflItem,
+.dxflFormLayout {
+    margin-bottom: 15px !important;
+}
+
+.dxflCaptionCell {
+    font-weight: 600 !important;
+    color: var(--dark) !important;
+    padding: 8px 0 !important;
+}
+
+/* Menu */
+.dxmMenu,
+.dxm-main {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%) !important;
+    border: none !important;
+    border-radius: 4px !important;
+}
+
+.dxm-item {
+    color: white !important;
+    padding: 10px 20px !important;
+    transition: background 0.2s ease !important;
+}
+
+.dxm-item:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dxm-selected {
+    background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Date Edit */
+.dxeCalendar {
+    border: 1px solid #dee2e6 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.dxeCalendarDay {
+    border-radius: 4px !important;
+    transition: all 0.2s ease !important;
+}
+
+.dxeCalendarDay:hover {
+    background: rgba(0, 120, 212, 0.1) !important;
+}
+
+.dxeCalendarSelected {
+    background: var(--primary) !important;
+    color: white !important;
+}
+
+.dxeCalendarToday {
+    border: 2px solid var(--primary) !important;
+}
+
+/* Memo/TextArea */
+.dxeMemoEditArea {
+    border: 1px solid #dee2e6 !important;
+    border-radius: 4px !important;
+    padding: 8px 12px !important;
+    background: white !important;
+    font-family: inherit !important;
+}
+
+.dxeMemoEditArea:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1) !important;
+    outline: none !important;
+}
+
+/* CheckBox */
+.dxeCheckBox,
+.dxeCheckBoxSys {
+    cursor: pointer !important;
+}
+
+.dxeCheckBoxChecked {
+    color: var(--primary) !important;
+}
+
+/* Validation */
+.dxeInvalid,
+.dxeInvalid .dxeEditArea {
+    border-color: var(--danger) !important;
+}
+
+.dxeErrorCell,
+.dxeErrorFrame {
+    color: var(--danger) !important;
+    font-size: 0.875rem !important;
+}
+
+/* Loading Panel */
+.dxlpLoadingPanel {
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.dxlpLoadingDiv {
+    background: white !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    padding: 20px !important;
+}
+
+/* Pager */
+.dxpControl {
+    padding: 10px !important;
+    background: var(--light) !important;
+    border-top: 1px solid #dee2e6 !important;
+}
+
+.dxpButton {
+    background: white !important;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 4px !important;
+    margin: 0 2px !important;
+    transition: all 0.2s ease !important;
+}
+
+.dxpButton:hover {
+    background: var(--primary) !important;
+    color: white !important;
+    border-color: var(--primary) !important;
+}
+
+.dxpPageNumber {
+    padding: 6px 12px !important;
+}
+
+/* Disabled State */
+.dxeDisabled,
+.dxeDisabled .dxeEditArea {
+    background: #f5f5f5 !important;
+    color: #999 !important;
+    cursor: not-allowed !important;
+}
+
+/* Card Style Container for Forms */
+.dx-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
