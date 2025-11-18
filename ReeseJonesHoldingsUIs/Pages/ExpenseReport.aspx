@@ -3,21 +3,21 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <asp:HiddenField ID="hfExpenseReports" runat="server" />
 
-    <div class="form-card">
-        <h2>Expense Report Management</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 20px;">
-            Create, edit, and delete expense entries. Click "Edit" to modify an entry or "Delete" to remove it.
-        </p>
+    <style>
+        .dxbButton {
+            background-color: #0078D4 !important;
+            border-radius: 8px !important;
+            border: none !important;
+        }
+    </style>
 
-        <dx:ASPxLabel ID="lblMessage" runat="server" 
-            Text="" 
-            ForeColor="Green"
-            Font-Bold="true"
-            CssClass="message-label">
-        </dx:ASPxLabel>
+    <div>
+        <h2>Expense Report Management</h2>
+        <p>Create, edit, and delete expense entries. Click "Edit" to modify an entry or "Delete" to remove it.</p>
+
+        <dx:ASPxLabel ID="lblMessage" runat="server" Text="" />
 
         <dx:ASPxGridView ID="gridExpenses" runat="server" 
-            
             Width="100%"
             KeyFieldName="Id"
             AutoGenerateColumns="False"
@@ -90,12 +90,9 @@
             </TotalSummary>
         </dx:ASPxGridView>
 
-        <div style="margin-top: 20px; padding: 15px; background: var(--light-bg); border-radius: 8px;">
-            <dx:ASPxImage ID="imgInfo" runat="server" 
-                IconID="actions_info_16x16"
-                style="vertical-align: middle;">
-            </dx:ASPxImage>
-            <span style="margin-left: 8px; color: var(--text-secondary);">
+        <div>
+            <dx:ASPxImage ID="imgInfo" runat="server" IconID="actions_info_16x16" />
+            <span>
                 <strong>Tips:</strong> Click "New" to add an expense. Use "Edit" to modify entries or "Delete" to remove them. 
                 The total amount is calculated automatically at the bottom.
             </span>

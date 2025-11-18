@@ -3,18 +3,19 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <asp:HiddenField ID="hfLeaveRequests" runat="server" />
 
-    <div class="form-card">
-        <h2>Leave Request Submission</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 20px;">
-            Submit a new leave request with the details below. All fields are required.
-        </p>
+    <style>
+        .dxbButton {
+            background-color: #0078D4 !important;
+            border-radius: 8px !important;
+            border: none !important;
+        }
+    </style>
 
-        <dx:ASPxLabel ID="lblMessage" runat="server" 
-            Text="" 
-            ForeColor="Green"
-            Font-Bold="true"
-            CssClass="message-label">
-        </dx:ASPxLabel>
+    <div>
+        <h2>Leave Request Submission</h2>
+        <p>Submit a new leave request with the details below. All fields are required.</p>
+
+        <dx:ASPxLabel ID="lblMessage" runat="server" Text="" />
 
         <dx:ASPxFormLayout ID="formLayout" runat="server" >
             <Items>
@@ -100,17 +101,14 @@
                 <dx:LayoutItem ShowCaption="False">
                     <LayoutItemNestedControlCollection>
                         <dx:LayoutItemNestedControlContainer>
-                            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                            <div>
                                 <dx:ASPxButton ID="btnSubmit" runat="server" 
                                     Text="Submit Request" 
-                                    
-                                    OnClick="btnSubmit_Click"
-                                    CssClass="btn-primary">
+                                    OnClick="btnSubmit_Click">
                                     <Image IconID="actions_apply_16x16"></Image>
                                 </dx:ASPxButton>
                                 <dx:ASPxButton ID="btnClear" runat="server" 
                                     Text="Clear Form" 
-                                    
                                     OnClick="btnClear_Click"
                                     CausesValidation="false">
                                     <Image IconID="actions_remove_16x16"></Image>
@@ -123,14 +121,11 @@
         </dx:ASPxFormLayout>
     </div>
 
-    <div class="form-card" style="margin-top: 30px;">
+    <div>
         <h3>Recent Leave Requests</h3>
-        <p style="color: var(--text-secondary); margin-bottom: 15px;">
-            Showing the 5 most recent submissions
-        </p>
+        <p>Showing the 5 most recent submissions</p>
 
         <dx:ASPxGridView ID="gridRecentRequests" runat="server" 
-            
             Width="100%"
             KeyFieldName="Id"
             AutoGenerateColumns="False">

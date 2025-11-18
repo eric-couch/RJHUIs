@@ -41,7 +41,7 @@
             Text="Refresh Data" 
             
             OnClick="btnRefresh_Click"
-            CssClass="btn-primary">
+            >
             <Image IconID="actions_refresh_16x16"></Image>
         </dx:ASPxButton>
     </div>

@@ -3,37 +3,73 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <asp:HiddenField ID="hfSurveys" runat="server" />
 
-    <div class="form-card">
-        <h2>Customer Survey Wizard</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 20px;">
-            Complete the survey by progressing through each step. All fields are required.
-        </p>
+    <style>
+        .dxbButton {
+            background-color: #0078D4 !important;
+            border-radius: 8px !important;
+            border: none !important;
+        }
+        .progress-container {
+            margin-bottom: 30px;
+        }
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .progress-text {
+            font-weight: 600;
+            color: #0078D4;
+        }
+        .progress-percent {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            width: 33%;
+            height: 100%;
+            background: linear-gradient(135deg, #0078D4 0%, #005a9e 100%);
+            transition: width 0.3s ease;
+        }
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.85em;
+            color: #6c757d;
+        }
+    </style>
 
-        <!-- Progress Indicator -->
-        <div style="margin-bottom: 30px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <span id="progressText" style="font-weight: 600; color: var(--primary);">Step 1 of 3</span>
-                <span id="progressPercent" style="color: var(--text-secondary); font-size: 0.9em;">33%</span>
+    <div>
+        <h2>Customer Survey Wizard</h2>
+        <p>Complete the survey by progressing through each step. All fields are required.</p>
+
+        <div class="progress-container">
+            <div class="progress-header">
+                <span id="progressText" class="progress-text">Step 1 of 3</span>
+                <span id="progressPercent" class="progress-percent">33%</span>
             </div>
-            <div style="width: 100%; height: 8px; background-color: #e9ecef; border-radius: 4px; overflow: hidden;">
-                <div id="progressBar" style="width: 33%; height: 100%; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); transition: width 0.3s ease;"></div>
+            <div class="progress-track">
+                <div id="progressBar" class="progress-bar"></div>
             </div>
-            <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.85em; color: var(--text-secondary);">
+            <div class="progress-labels">
                 <span>Demographics</span>
                 <span>Preferences</span>
                 <span>Review</span>
             </div>
         </div>
 
-        <dx:ASPxLabel ID="lblMessage" runat="server" 
-            Text="" 
-            ForeColor="Green"
-            Font-Bold="true"
-            CssClass="message-label">
-        </dx:ASPxLabel>
+        <dx:ASPxLabel ID="lblMessage" runat="server" Text="" />
 
         <dx:ASPxPageControl ID="pageControl" runat="server" 
-            
             Width="100%"
             ActiveTabIndex="0"
             EnableCallBacks="true"
@@ -45,11 +81,9 @@
                 <dx:TabPage Text="Demographics">
                     <ContentCollection>
                         <dx:ContentControl>
-                            <div style="padding: 20px;">
-                                <h3 style="margin-top: 0; color: var(--primary);">Step 1: Personal Information</h3>
-                                <p style="color: var(--text-secondary); margin-bottom: 20px;">
-                                    Please provide your basic information below.
-                                </p>
+                            <div>
+                                <h3>Step 1: Personal Information</h3>
+                                <p>Please provide your basic information below.</p>
 
                                 <dx:ASPxFormLayout ID="formDemographics" runat="server" >
                                     <Items>
@@ -96,12 +130,10 @@
                                     </Items>
                                 </dx:ASPxFormLayout>
 
-                                <div style="margin-top: 20px; text-align: right;">
+                                <div>
                                     <dx:ASPxButton ID="btnNextDemographics" runat="server" 
                                         Text="Next Step" 
-                                        
-                                        OnClick="btnNextDemographics_Click"
-                                        CssClass="btn-primary">
+                                        OnClick="btnNextDemographics_Click">
                                         <Image IconID="actions_next_16x16"></Image>
                                     </dx:ASPxButton>
                                 </div>
@@ -113,11 +145,9 @@
                 <dx:TabPage Text="Preferences">
                     <ContentCollection>
                         <dx:ContentControl>
-                            <div style="padding: 20px;">
-                                <h3 style="margin-top: 0; color: var(--primary);">Step 2: Your Preferences</h3>
-                                <p style="color: var(--text-secondary); margin-bottom: 20px;">
-                                    Tell us about your preferences and expectations.
-                                </p>
+                            <div>
+                                <h3>Step 2: Your Preferences</h3>
+                                <p>Tell us about your preferences and expectations.</p>
 
                                 <dx:ASPxFormLayout ID="formPreferences" runat="server" >
                                     <Items>
@@ -157,19 +187,16 @@
                                     </Items>
                                 </dx:ASPxFormLayout>
 
-                                <div style="margin-top: 20px; display: flex; justify-content: space-between;">
+                                <div>
                                     <dx:ASPxButton ID="btnPreviousPreferences" runat="server" 
                                         Text="Previous Step" 
-                                        
                                         OnClick="btnPreviousPreferences_Click"
                                         CausesValidation="false">
                                         <Image IconID="actions_prev_16x16"></Image>
                                     </dx:ASPxButton>
                                     <dx:ASPxButton ID="btnNextPreferences" runat="server" 
                                         Text="Next Step" 
-                                        
-                                        OnClick="btnNextPreferences_Click"
-                                        CssClass="btn-primary">
+                                        OnClick="btnNextPreferences_Click">
                                         <Image IconID="actions_next_16x16"></Image>
                                     </dx:ASPxButton>
                                 </div>
@@ -181,55 +208,49 @@
                 <dx:TabPage Text="Confirmation">
                     <ContentCollection>
                         <dx:ContentControl>
-                            <div style="padding: 20px;">
-                                <h3 style="margin-top: 0; color: var(--primary);">Step 3: Review & Submit</h3>
-                                <p style="color: var(--text-secondary); margin-bottom: 20px;">
-                                    Please review your responses before submitting.
-                                </p>
+                            <div>
+                                <h3>Step 3: Review & Submit</h3>
+                                <p>Please review your responses before submitting.</p>
 
-                                <div style="background: var(--light-bg); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                                    <h4 style="margin-top: 0; color: var(--primary);">Personal Information</h4>
-                                    <div style="margin-bottom: 10px;">
+                                <div>
+                                    <h4>Personal Information</h4>
+                                    <div>
                                         <strong>Name:</strong> <dx:ASPxLabel ID="lblConfirmName" runat="server" Text="" />
                                     </div>
-                                    <div style="margin-bottom: 10px;">
+                                    <div>
                                         <strong>Age:</strong> <dx:ASPxLabel ID="lblConfirmAge" runat="server" Text="" />
                                     </div>
-                                    <div style="margin-bottom: 10px;">
+                                    <div>
                                         <strong>Location:</strong> <dx:ASPxLabel ID="lblConfirmLocation" runat="server" Text="" />
                                     </div>
 
-                                    <h4 style="margin-top: 20px; color: var(--primary);">Preferences</h4>
-                                    <div style="margin-bottom: 10px;">
+                                    <h4>Preferences</h4>
+                                    <div>
                                         <strong>Satisfaction:</strong> <dx:ASPxLabel ID="lblConfirmPreference" runat="server" Text="" />
                                     </div>
-                                    <div style="margin-bottom: 10px;">
+                                    <div>
                                         <strong>Comments:</strong> <dx:ASPxLabel ID="lblConfirmComments" runat="server" Text="" />
                                     </div>
                                 </div>
 
-                                <div style="margin-top: 20px; display: flex; justify-content: space-between;">
+                                <div>
                                     <dx:ASPxButton ID="btnPreviousConfirmation" runat="server" 
                                         Text="Previous Step" 
-                                        
                                         OnClick="btnPreviousConfirmation_Click"
                                         CausesValidation="false">
                                         <Image IconID="actions_prev_16x16"></Image>
                                     </dx:ASPxButton>
-                                    <div style="display: flex; gap: 10px;">
+                                    <div>
                                         <dx:ASPxButton ID="btnReset" runat="server" 
                                             Text="Reset Survey" 
-                                            
                                             OnClick="btnReset_Click"
                                             CausesValidation="false">
                                             <Image IconID="actions_refresh_16x16"></Image>
                                         </dx:ASPxButton>
                                         <dx:ASPxButton ID="btnSubmit" runat="server" 
                                             Text="Submit Survey" 
-                                            
                                             OnClick="btnSubmit_Click"
-                                            CausesValidation="false"
-                                            CssClass="btn-primary">
+                                            CausesValidation="false">
                                             <Image IconID="actions_apply_16x16"></Image>
                                         </dx:ASPxButton>
                                     </div>

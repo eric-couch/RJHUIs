@@ -52,7 +52,7 @@
         
         <div class="site-footer">
             <dx:ASPxLabel ID="lblFooter" runat="server" 
-                Text="DevExpress v25.1.6 Trial Demo | Â© 2025 Reese Jones Holdings" 
+                Text="DevExpress v25.1.6 Trial Demo | © 2025 Reese Jones Holdings" 
                 ForeColor="White" />
         </div>
     </form>

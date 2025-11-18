@@ -18,7 +18,7 @@
                 Text="View Demo" 
                 
                 OnClick="btnLeaveRequest_Click"
-                CssClass="btn-primary">
+                >
             </dx:ASPxButton>
         </div>
 
@@ -33,7 +33,7 @@
                 Text="View Demo" 
                 
                 OnClick="btnExpenseReport_Click"
-                CssClass="btn-primary">
+                >
             </dx:ASPxButton>
         </div>
 
@@ -48,7 +48,7 @@
                 Text="View Demo" 
                 
                 OnClick="btnSurveyWizard_Click"
-                CssClass="btn-primary">
+                >
             </dx:ASPxButton>
         </div>
 
@@ -63,7 +63,7 @@
                 Text="View Demo" 
                 
                 OnClick="btnAdminDashboard_Click"
-                CssClass="btn-primary">
+                >
             </dx:ASPxButton>
         </div>
 
@@ -78,7 +78,7 @@
                 Text="View Demo" 
                 
                 OnClick="btnLogin_Click"
-                CssClass="btn-primary">
+                >
             </dx:ASPxButton>
         </div>
     </div>
