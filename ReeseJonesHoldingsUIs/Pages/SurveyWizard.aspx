@@ -9,6 +9,22 @@
             Complete the survey by progressing through each step. All fields are required.
         </p>
 
+        <!-- Progress Indicator -->
+        <div style="margin-bottom: 30px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span id="progressText" style="font-weight: 600; color: var(--primary);">Step 1 of 3</span>
+                <span id="progressPercent" style="color: var(--text-secondary); font-size: 0.9em;">33%</span>
+            </div>
+            <div style="width: 100%; height: 8px; background-color: #e9ecef; border-radius: 4px; overflow: hidden;">
+                <div id="progressBar" style="width: 33%; height: 100%; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); transition: width 0.3s ease;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.85em; color: var(--text-secondary);">
+                <span>Demographics</span>
+                <span>Preferences</span>
+                <span>Review</span>
+            </div>
+        </div>
+
         <dx:ASPxLabel ID="lblMessage" runat="server" 
             Text="" 
             ForeColor="Green"
@@ -20,7 +36,10 @@
             
             Width="100%"
             ActiveTabIndex="0"
-            EnableCallBacks="true">
+            EnableCallBacks="true"
+            ClientInstanceName="pageControl">
+            
+            <ClientSideEvents ActiveTabChanged="function(s, e) { updateProgress(s.GetActiveTabIndex()); }" />
             
             <TabPages>
                 <dx:TabPage Text="Demographics">
@@ -222,4 +241,27 @@
             </TabPages>
         </dx:ASPxPageControl>
     </div>
+
+    <script type="text/javascript">
+        function updateProgress(tabIndex) {
+            var totalSteps = 3;
+            var currentStep = tabIndex + 1;
+            var percentage = Math.round((currentStep / totalSteps) * 100);
+            
+            // Update text
+            document.getElementById('progressText').textContent = 'Step ' + currentStep + ' of ' + totalSteps;
+            document.getElementById('progressPercent').textContent = percentage + '%';
+            
+            // Update progress bar
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+        
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            if (typeof pageControl !== 'undefined') {
+                updateProgress(pageControl.GetActiveTabIndex());
+            }
+        });
+    </script>
 </asp:Content>
+
