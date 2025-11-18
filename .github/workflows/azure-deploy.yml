@@ -102,7 +102,7 @@ jobs:
       - name: Restore NuGet packages
         shell: pwsh
         run: |
-          Write-Host "Starting NuGet restore with explicit config..."
+          Write-Host "Starting NuGet restore..."
           
           $nugetConfigPath = Join-Path $env:GITHUB_WORKSPACE "NuGet.Config"
           
@@ -113,12 +113,14 @@ jobs:
             exit 1
           }
           
-          # Use explicit config file
-          nuget restore ReeseJonesHoldingsUIs.sln `
-            -ConfigFile $nugetConfigPath `
-            -NonInteractive `
-            -Verbosity detailed `
-            -NoCache
+          # Use MSBuild-based restore which is faster and more reliable
+          msbuild ReeseJonesHoldingsUIs.sln `
+            /t:Restore `
+            /p:RestoreConfigFile=$nugetConfigPath `
+            /p:RestoreNoCache=true `
+            /verbosity:minimal
+          
+          Write-Host "Package restore completed"
 
       - name: Build solution
         shell: pwsh
