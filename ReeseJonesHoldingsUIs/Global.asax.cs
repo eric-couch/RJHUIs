@@ -1,31 +1,70 @@
 using System;
+using System.IO;
 using System.Web;
 
 namespace ReeseJonesHoldingsUIs
 {
     public class Global : HttpApplication
     {
-        void Application_Start(object sender, EventArgs e)
+        protected void Application_Start(object sender, EventArgs e)
         {
-            // Code that runs on application startup
+            // Register DevExpress license
+            RegisterDevExpressLicense();
         }
 
-        void Application_End(object sender, EventArgs e)
+        private void RegisterDevExpressLicense()
+        {
+            try
+            {
+                // Check for license key in environment variable (Azure App Setting)
+                string licenseKey = Environment.GetEnvironmentVariable("DEVEXPRESS_LICENSE_KEY");
+                
+                if (!string.IsNullOrWhiteSpace(licenseKey))
+                {
+                    // Ensure DevExpress directory exists
+                    string devExpressDir = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                        "DevExpress"
+                    );
+                    
+                    if (!Directory.Exists(devExpressDir))
+                    {
+                        Directory.CreateDirectory(devExpressDir);
+                    }
+                    
+                    // Write license file
+                    string licenseFile = Path.Combine(devExpressDir, "DevExpress_License.txt");
+                    File.WriteAllText(licenseFile, licenseKey);
+                    
+                    System.Diagnostics.Debug.WriteLine("DevExpress license registered from environment variable");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("DEVEXPRESS_LICENSE_KEY environment variable not found");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error registering DevExpress license: {ex.Message}");
+            }
+        }
+
+        protected void Application_End(object sender, EventArgs e)
         {
             // Code that runs on application shutdown
         }
 
-        void Application_Error(object sender, EventArgs e)
+        protected void Application_Error(object sender, EventArgs e)
         {
             // Code that runs when an unhandled error occurs
         }
 
-        void Session_Start(object sender, EventArgs e)
+        protected void Session_Start(object sender, EventArgs e)
         {
             // Code that runs when a new session is started
         }
 
-        void Session_End(object sender, EventArgs e)
+        protected void Session_End(object sender, EventArgs e)
         {
             // Code that runs when a session ends
         }

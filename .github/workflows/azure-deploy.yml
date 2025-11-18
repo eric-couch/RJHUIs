@@ -29,40 +29,35 @@ jobs:
 
       - name: Activate DevExpress License
         shell: pwsh
-        env:
-          DX_LICENSE_KEY: ${{ secrets.DEVEXPRESS_LICENSE_KEY }}
         run: |
           Write-Host "Activating DevExpress license..."
           
-          $licenseKey = $env:DX_LICENSE_KEY
+          $licenseDir = "$env:APPDATA\DevExpress"
+          if (!(Test-Path $licenseDir)) {
+            New-Item -ItemType Directory -Path $licenseDir -Force | Out-Null
+          }
+          
+          $licenseFile = Join-Path $licenseDir "DevExpress_License.txt"
+          $licenseKey = "${{ secrets.DEVEXPRESS_LICENSE_KEY }}"
           
           if ([string]::IsNullOrWhiteSpace($licenseKey)) {
-            Write-Host "ERROR: DEVEXPRESS_LICENSE_KEY secret is not set!"
-            Write-Host "You need to add your DevExpress license key (starts with LCXv1) as a GitHub secret."
+            Write-Error "DEVEXPRESS_LICENSE_KEY secret is not set or is empty"
             exit 1
           }
           
-          Write-Host "License key received - Length: $($licenseKey.Length) chars"
+          # Write license key (no newline to avoid formatting issues)
+          Set-Content -Path $licenseFile -Value $licenseKey -NoNewline -Force
           
-          # Create DevExpress config directory
-          $dxConfigPath = Join-Path $env:APPDATA "DevExpress"
-          if (-not (Test-Path $dxConfigPath)) {
-            New-Item -ItemType Directory -Path $dxConfigPath -Force | Out-Null
-            Write-Host "Created DevExpress config directory: $dxConfigPath"
-          }
+          Write-Host "License file created at: $licenseFile"
+          Write-Host "License key length: $($licenseKey.Length) characters"
+          Write-Host "License key starts with: $($licenseKey.Substring(0, [Math]::Min(10, $licenseKey.Length)))"
           
-          # Write license file
-          $licensePath = Join-Path $dxConfigPath "DevExpress_License.txt"
-          $licenseKey | Set-Content -Path $licensePath -Encoding UTF8
-          
-          Write-Host "DevExpress license file created at: $licensePath"
-          
-          # Verify
-          if (Test-Path $licensePath) {
-            $fileSize = (Get-Item $licensePath).Length
-            Write-Host "License file verified - Size: $fileSize bytes"
+          # Verify file was written
+          if (Test-Path $licenseFile) {
+            $content = Get-Content $licenseFile -Raw
+            Write-Host "✓ License file verified (size: $($content.Length) bytes)"
           } else {
-            Write-Host "ERROR: Failed to create license file!"
+            Write-Error "Failed to create license file"
             exit 1
           }
 
