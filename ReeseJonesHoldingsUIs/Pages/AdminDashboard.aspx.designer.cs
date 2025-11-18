@@ -39,6 +39,33 @@ namespace ReeseJonesHoldingsUIs.Pages
         protected global::System.Web.UI.WebControls.HiddenField hfUsers;
 
         /// <summary>
+        /// hfUsersHeight control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfUsersHeight;
+
+        /// <summary>
+        /// hfSessionsHeight control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfSessionsHeight;
+
+        /// <summary>
+        /// hfApprovalsHeight control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfApprovalsHeight;
+
+        /// <summary>
         /// btnRefresh control.
         /// </summary>
         /// <remarks>
@@ -109,6 +136,60 @@ namespace ReeseJonesHoldingsUIs.Pages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.ASPxLabel lblPendingApprovals;
+
+        /// <summary>
+        /// lblChartTotalUsers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxLabel lblChartTotalUsers;
+
+        /// <summary>
+        /// lblChartActiveSessions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxLabel lblChartActiveSessions;
+
+        /// <summary>
+        /// lblChartPendingApprovals control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxLabel lblChartPendingApprovals;
+
+        /// <summary>
+        /// barUsers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel barUsers;
+
+        /// <summary>
+        /// barSessions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel barSessions;
+
+        /// <summary>
+        /// barApprovals control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel barApprovals;
 
         /// <summary>
         /// imgExpenses control.

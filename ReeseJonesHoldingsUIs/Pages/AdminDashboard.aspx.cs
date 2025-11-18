@@ -67,6 +67,36 @@ namespace ReeseJonesHoldingsUIs.Pages
                 // Count pending leave approvals
                 var pendingCount = leaveRequests.Count(lr => lr.Status == "Pending");
                 lblPendingApprovals.Text = pendingCount > 0 ? pendingCount.ToString() : "2";
+
+                // Update chart labels
+                lblChartTotalUsers.Text = lblTotalUsers.Text;
+                lblChartActiveSessions.Text = lblActiveSessions.Text;
+                lblChartPendingApprovals.Text = lblPendingApprovals.Text;
+
+                // Calculate bar heights - using pixels instead of percentages
+                int usersVal = int.Parse(lblTotalUsers.Text);
+                int sessionsVal = int.Parse(lblActiveSessions.Text);
+                int approvalsVal = int.Parse(lblPendingApprovals.Text);
+
+                int maxValue = Math.Max(usersVal, Math.Max(sessionsVal, approvalsVal));
+                if (maxValue == 0) maxValue = 1;
+
+                // Container height is 220px, use 200px as max bar height to leave room
+                const int maxHeightPx = 200;
+                const int minHeightPx = 40;
+
+                int usersHeightPx = Math.Max(minHeightPx, (int)((double)usersVal / maxValue * maxHeightPx));
+                int sessionsHeightPx = Math.Max(minHeightPx, (int)((double)sessionsVal / maxValue * maxHeightPx));
+                int approvalsHeightPx = Math.Max(minHeightPx, (int)((double)approvalsVal / maxValue * maxHeightPx));
+
+                // Set heights using pixel units
+                barUsers.Height = new System.Web.UI.WebControls.Unit(usersHeightPx, System.Web.UI.WebControls.UnitType.Pixel);
+                barSessions.Height = new System.Web.UI.WebControls.Unit(sessionsHeightPx, System.Web.UI.WebControls.UnitType.Pixel);
+                barApprovals.Height = new System.Web.UI.WebControls.Unit(approvalsHeightPx, System.Web.UI.WebControls.UnitType.Pixel);
+
+                hfUsersHeight.Value = usersHeightPx.ToString();
+                hfSessionsHeight.Value = sessionsHeightPx.ToString();
+                hfApprovalsHeight.Value = approvalsHeightPx.ToString();
             }
             catch (Exception ex)
             {
